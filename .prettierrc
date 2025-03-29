@@ -3,6 +3,5 @@
   "trailingComma": "all",
   "tabWidth": 2,
   "semi": true,
-  "printWidth": 70,
-  "plugins": ["prettier-plugin-tailwind"]
+  "printWidth": 70
 }

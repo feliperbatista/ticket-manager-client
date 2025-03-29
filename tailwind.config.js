@@ -13,6 +13,9 @@ export default {
         text: '#C7CCD9',
         backgroud: '#181818',
       },
+      maxWidth: {
+        690: '690px',
+      },
     },
   },
   plugins: [],
