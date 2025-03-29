@@ -12,6 +12,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "font-awesome": "^4.7.0",
+    "js-cookie": "^3.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.15",
+    "@types/js-cookie": "^3.0.6",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "postcss-ordered-values": "^7.0.1",
