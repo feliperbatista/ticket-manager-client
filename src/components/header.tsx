@@ -1,18 +1,10 @@
-import { useContext, useEffect } from 'react';
 import BlueButton from './blue-button';
 import WhiteButton from './white-button';
-import { useAuth } from '../context/AuthContext'; // Using the custom hook
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
-  const { user, logout, loading } = useAuth(); // Accessing user, logout, and loading from the context
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user) {
-      navigate('/dash'); // Redirect to /dash if the user is logged in
-    }
-  }, [user, navigate]);
+  const { user, logout, loading } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -20,18 +12,17 @@ export default function Header() {
 
   return (
     <header className="m-4 height-32 flex items-center justify-between">
-      <a
-        href="/"
+      <Link
+        to="/"
         className="font-alconica text-text text-xl uppercase"
       >
         help center
-      </a>
+      </Link>
       <nav className="flex space-x-4">
         {user ? (
           <>
-            <WhiteButton text="meus tickets" linkTo="/meus-tickets" />
+            <WhiteButton text="meus tickets" linkTo="/my-tickets" />
             <BlueButton text="novo ticket" linkTo="/novo-ticket" />
-            {/* Add Logout Button */}
             <button onClick={logout} className="text-red-500">
               Logout
             </button>

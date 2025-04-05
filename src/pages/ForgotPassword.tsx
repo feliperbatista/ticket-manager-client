@@ -1,58 +1,49 @@
 import { useState } from 'react';
 import Input from '../components/input';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import Cookies from 'js-cookie';
 
-export default function SignIn() {
-  const apiURL = process.env.REACT_APP_API_URL;
-  const navigate = useNavigate();
+export default function ForgotPassword() {
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
   });
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const { setUser } = useAuth();
+  const [loading, setLoading] = useState(false);
 
+  const apiURL = process.env.REACT_APP_API_URL;
+  const [success, setSuccess] = useState('');
   const validateForm = (): boolean => {
     const newErrors: { [ket: string]: string } = {};
     if (!formData.email) newErrors.email = 'Informe seu email';
-    if (!formData.password) newErrors.password = 'Informe sua senha';
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const login = async () => {
+  const forgotPassword = async () => {
     try {
       setLoading(true);
 
-      const response = await fetch(`${apiURL}/users/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${apiURL}/users/forgot-password`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+          }),
         },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess('Login com sucesso!');
+        setSuccess('Recuperação de senha enviada por email!');
         setFormData({
           email: '',
-          password: '',
         });
-        Cookies.set('token', data.token);
-        setUser({ token: data.token });
-        navigate('/');
       } else {
         setErrors({ api: data.message || 'Ocorreu um erro' });
+        setSuccess('');
       }
     } catch (error) {
       setErrors({
@@ -77,9 +68,8 @@ export default function SignIn() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (validateForm()) login();
+    if (validateForm()) forgotPassword();
   };
-
   return (
     <main
       className="flex items-center justify-center"
@@ -87,7 +77,7 @@ export default function SignIn() {
     >
       <div className="w-full max-w-[690px] m-auto sm:mx-auto p-4 border rounded-xl border-primary">
         <h1 className="uppercase mt-8 font-bold text-center text-3xl font-montserrat text-primary">
-          fazer login
+          recuperar conta
         </h1>
         <form
           onSubmit={handleSubmit}
@@ -102,15 +92,6 @@ export default function SignIn() {
               handleInputChange={handleInputChange}
               value={formData.email}
               error={errors.email}
-            />
-            <Input
-              name="password"
-              id="password"
-              type="password"
-              placeholder="Senha"
-              handleInputChange={handleInputChange}
-              value={formData.password}
-              error={errors.password}
             />
           </div>
           <button
@@ -127,16 +108,6 @@ export default function SignIn() {
             <p className="text-red-500 mt-4">{errors.api}</p>
           )}
         </form>
-        <Link to="/forgot-password">
-          <p className="font-montserrat text-text text-xs text-center">
-            Não consegue fazer o login?
-          </p>
-        </Link>
-        <Link to="/signup">
-          <p className="font-montserrat text-text text-xs mt-2 text-center">
-            Criar conta
-          </p>
-        </Link>
       </div>
     </main>
   );
